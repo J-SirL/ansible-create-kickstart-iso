@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: Johan Sörell
+  description: Ansible role for creating a Kickstart ISO, primarily for AlmaLinux 9.
+  license: GPL-3.0
+  min_ansible_version: "2.9"
+  platforms:
+    - name: EL
+      versions:
+        - "7"
+        - "8"
+        - "9"
+    - name: Fedora
+      versions:
+        - all
+  galaxy_tags:
+    - linux
+    - system
+    - kickstart
+    - iso
+    - AlmaLinux
+dependencies: []
