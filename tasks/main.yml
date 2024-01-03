@@ -1,0 +1,8 @@
+
+- name: download distro iso to use with kickstart iso creation
+  ansible.builtin.include_tasks:
+    check_iso_status.yml
+
+- name: include create kickstart iso
+  ansible.builtin.include_tasks:
+    create_kickstart_iso.yml

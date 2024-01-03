@@ -1,0 +1,28 @@
+# code: language=ansible
+---
+- name: Download AlmaLinux ISO
+  ansible.builtin.get_url:
+    url: "{{ iso_url }}"
+    dest: "{{ destination }}"
+  async: 3600  # Run for 1 hour
+  poll: 0
+  register: download_iso
+
+- name: Wait for the download to complete
+  ansible.builtin.async_status:
+    jid: "{{ download_iso.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 120  # Retry 120 times
+  delay: 30  # Delay of 30 seconds between retries
+
+- name: Calculate SHA256 checksum of the downloaded file
+  ansible.builtin.command:
+    cmd: "sha256sum {{ destination }}"
+  register: actual_checksum_output
+  when: job_result.finished
+
+- name: Verify SHA256 Checksum
+  ansible.builtin.fail:
+    msg: "Checksum verification failed"
+  when: job_result.finished and (expected_sha256 not in actual_checksum_output.stdout)

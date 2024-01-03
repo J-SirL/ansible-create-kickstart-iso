@@ -1,0 +1,25 @@
+# code: language=ansible
+---
+
+# This is the variables for user and password
+ks_pass: $6$jpVj9WymVzsOZVBX$SIxH/SA/LaEtFacGtjwb72680RgYSuYznwv8Yu9zgQgJCpcw3BOu85JVIXwUBYDP/DErpnS3fwAb4QuuyV1ag1
+
+# Select the type of OS you like to install a Server or Workstation
+kickstart_type: workstation # valid types server|workstation
+
+original_iso_path: "./ISO/AlmaLinux-9.3-x86_64-dvd.iso"
+
+new_iso_path: "./finished_iso/"
+
+#ks_file_path: "./config/ks.cfg" now it's set in the file 
+working_directory: "/tmp/isowork"
+
+
+# variables for downloading iso
+iso_url: "https://repo.almalinux.org/almalinux/9.3/isos/x86_64/AlmaLinux-9.3-x86_64-dvd.iso"
+destination: "./ISO/AlmaLinux-9.3-x86_64-dvd.iso"
+expected_sha256: "a8c4ed4b79edd0977d7f88be7c07e12c4b748671a7786eb636c6700e58068d5"
+
+# check iso status variables
+file_path: "./ISO/AlmaLinux-9.3-x86_64-dvd.iso"
+expected_checksum: "a8c4ed4b79edd0977d7f88be7c07e12c4b748671a7786eb636c6700e58068d5"
