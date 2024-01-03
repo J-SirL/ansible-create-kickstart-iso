@@ -396,3 +396,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# ignore ISO and finsished_iso files
+ISO/*.iso
+finsished_iso/*.iso
