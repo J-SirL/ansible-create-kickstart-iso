@@ -9,9 +9,9 @@ kickstart_type: workstation # valid types server|workstation
 
 ks_new_iso_path: "{{ playbook_dir }}/finished_iso/"
 
-ks_original_iso_dir: "{{ playbook_dir }}/original_iso"
+ks_original_iso_dir_dir: "{{ playbook_dir }}/original_iso"
 
-ks_original_iso_path: "{{ ks_original_iso }}AlmaLinux-9.3-x86_64-dvd.iso"
+ks_original_iso_dir_path: "{{ ks_original_iso_dir }}AlmaLinux-9.3-x86_64-dvd.iso"
 
 
 #ks_file_path: "./config/ks.cfg" now it's set in the file 
