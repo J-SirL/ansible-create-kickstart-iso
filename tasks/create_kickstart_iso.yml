@@ -3,7 +3,7 @@
 - name: Ensure Valid kickstart Configuration Type
   ansible.builtin.assert:
     that:
-      - kickstart_type is match ('^(server|workstation)$'
+      - kickstart_type is match ('^(server|workstation)$')
     fail_msg: "'kickstart_type' must be set to either server or workstation but currently set to {{ kickstart_type }}"
     success_msg: "'kickstart_type' is set to {{ kickstart_type  }}"
 
