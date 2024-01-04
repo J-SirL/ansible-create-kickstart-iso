@@ -5,7 +5,7 @@
     state: directory
     mode: 0755
   with_items:
-     - "{{ ks_original_iso_dir_dir }}"
+     - "{{ ks_original_iso_dir }}"
      - "{{ ks_new_iso_path }}"
 
 - name: download distro iso to use with kickstart iso creation
