@@ -1,4 +1,13 @@
 
+- name: Create folders for original iso and modified iso
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+     - {{ ks_original_iso_dir }}
+     - {{ ks_new_iso_path }}
+
 - name: download distro iso to use with kickstart iso creation
   ansible.builtin.include_tasks:
     check_iso_status.yml

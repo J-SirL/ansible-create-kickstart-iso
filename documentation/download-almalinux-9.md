@@ -13,13 +13,13 @@ This Ansible playbook automates the downloading of the AlmaLinux 9.3 ISO file an
 2. **SHA256 Checksum Verification**: After the download completes, the playbook verifies the ISO file's SHA256 checksum to ensure the file's integrity.
 
 ## Variables
-- `iso_url`: The URL of the AlmaLinux 9.3 ISO file.
+- `ks_iso_url`: The URL of the AlmaLinux 9.3 ISO file.
 - `destination`: The local path where the ISO file will be saved.
 - `expected_sha256`: The expected SHA256 checksum of the ISO file.
 
 ## Usage
 1. Ensure Ansible is installed on your machine.
-2. Configure the playbook variables (`iso_url`, `destination`, and `expected_sha256`) as needed.
+2. Configure the playbook variables (`ks_iso_url`, `destination`, and `expected_sha256`) as needed.
 3. Run the playbook using the following command:
 
    ```bash

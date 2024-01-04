@@ -2,8 +2,8 @@
 ---
 - name: Download AlmaLinux ISO
   ansible.builtin.get_url:
-    url: "{{ iso_url }}"
-    dest: "{{ destination }}"
+    url: "{{ ks_iso_url }}"
+    dest: "{{ ks_original_iso_path }}"
   async: 3600  # Run for 1 hour
   poll: 0
   register: download_iso
@@ -18,11 +18,11 @@
 
 - name: Calculate SHA256 checksum of the downloaded file
   ansible.builtin.command:
-    cmd: "sha256sum {{ destination }}"
+    cmd: "sha256sum {{ ks_original_iso_path }}"
   register: actual_checksum_output
   when: job_result.finished
 
 - name: Verify SHA256 Checksum
   ansible.builtin.fail:
     msg: "Checksum verification failed"
-  when: job_result.finished and (expected_sha256 not in actual_checksum_output.stdout)
+  when: job_result.finished and (ks_expected_sha256_checksum not in actual_checksum_output.stdout)

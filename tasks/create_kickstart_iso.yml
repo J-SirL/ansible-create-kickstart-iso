@@ -22,11 +22,11 @@
     mode: 0755
   with_items:
     - /mnt/iso
-    - "{{ working_directory }}"
+    - "{{ ks_working_directory }}"
 
 - name: Mount the original ISO
   ansible.posix.mount:
-    src: "{{ original_iso_path }}"
+    src: "{{ ks_original_iso_path }}"
     path: /mnt/iso
     fstype: iso9660
     opts: loop
@@ -35,7 +35,7 @@
 - name: Synchronize ISO contents to working directory
   ansible.posix.synchronize:
     src: /mnt/iso/
-    dest: "{{ working_directory }}"
+    dest: "{{ ks_working_directory }}"
     recursive: yes
 
 - name: Unmount the ISO
@@ -45,7 +45,7 @@
 
 - name: Determine the correct Kickstart file path
   set_fact:
-    ks_file_path: "{{ 'templates/config/server-ks.cfg.j2' if kickstart_type == 'server' else 'templates/config/workstation-ks.cfg.j2' }}"
+    ks_kickstart_file_path: "{{ 'templates/config/server-ks.cfg.j2' if kickstart_type == 'server' else 'templates/config/workstation-ks.cfg.j2' }}"
 
 - name: Set the correct iso file name
   set_fact:
@@ -53,21 +53,21 @@
 
 - name: Place the Kickstart file in the working directory
   ansible.builtin.template:
-    src: "{{ ks_file_path }}"
-    dest: "{{ working_directory }}/ks.cfg"
+    src: "{{ ks_kickstart_file_path }}"
+    dest: "{{ ks_working_directory }}/ks.cfg"
     mode: '0644'
 
 
 - name: Update isolinux.cfg to include Kickstart file
   ansible.builtin.template:
     src: isolinux.cfg.j2
-    dest: "{{ working_directory }}/isolinux/isolinux.cfg"
+    dest: "{{ ks_working_directory }}/isolinux/isolinux.cfg"
     mode: '0644'
 
 - name: Update grub.cfg to include Kickstart file
   ansible.builtin.template:
     src: grub.cfg.j2
-    dest: "{{ working_directory }}/EFI/BOOT/grub.cfg"
+    dest: "{{ ks_working_directory }}/EFI/BOOT/grub.cfg"
     mode: '0644'
 
 - name: Recreate the ISO
@@ -77,12 +77,12 @@
     -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot
     -boot-load-size 4 -boot-info-table -x "lost+found"
     -input-charset utf-8
-    -o "{{ new_iso_path }}{{ ks_iso_file }}" "{{ working_directory }}/"
+    -o "{{ ks_new_iso_path }}{{ ks_iso_file }}" "{{ ks_working_directory }}/"
   register: genisoimage_output
   changed_when: "'extents written' in genisoimage_output.stderr"
 
 - name: Add MD5 checksum to the new ISO
-  command: implantisomd5 "{{ new_iso_path }}{{ ks_iso_file }}"
+  command: implantisomd5 "{{ ks_new_iso_path }}{{ ks_iso_file }}"
   when: genisoimage_output is changed
   register: md5_output # noqa: no-handler
 
@@ -104,7 +104,7 @@
 
 - name: Cleanup working directory
   file:
-    path: "{{ working_directory }}"
+    path: "{{ ks_working_directory }}"
     state: absent
   no_log: true
   changed_when: false

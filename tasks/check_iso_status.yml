@@ -1,26 +1,26 @@
 # code: language=ansible
 ---
-- name: Check if the file exists
+- name: Check if the original iso exists
   ansible.builtin.stat:
-    path: "{{ file_path }}"
-  register: file_stat
+    path: "{{ ks_original_iso_path }}"
+  register: ks_iso_file_stat
 
-- name: Calculate the SHA256 checksum of the file
+- name: Calculate the SHA256 checksum of the original iso
   ansible.builtin.shell:
-    cmd: "sha256sum {{ file_path }} | awk '{ print $1 }'"
+    cmd: "sha256sum {{ ks_original_iso_path }} | awk '{ print $1 }'"
   register: sha256sum
-  when: file_stat.stat.exists
+  when: ks_iso_file_stat.stat.exists
 
 - name: Assert that the checksum matches
   ansible.builtin.assert:
     that:
-      - "'sha256:' + sha256sum.stdout == expected_checksum"
+      - "'sha256:' + sha256sum.stdout == ks_expected_sha256_checksum"
     fail_msg: "Checksum does not match"
     success_msg: "Checksum matches"
-  when: file_stat.stat.exists
+  when: ks_iso_file_stat.stat.exists
   ignore_errors: yes
   register: checksum_assertion
 
 - name: Include tasks to handle file download/replacement
   include_tasks: download-almalinux-9.yml
-  when: not file_stat.stat.exists or checksum_assertion is failed
+  when: not ks_iso_file_stat.stat.exists or checksum_assertion is failed

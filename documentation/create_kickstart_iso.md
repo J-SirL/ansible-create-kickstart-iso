@@ -30,7 +30,7 @@ This documentation outlines an Ansible playbook designed to automate the process
 - `original_iso_path`: Path to the original AlmaLinux ISO.
 - `new_iso_path`: Path where the new ISO will be saved.
 - `ks_file_path`: Path to the Kickstart file.
-- `working_directory`: Temporary working directory path.
+- `ks_working_directory`: Temporary working directory path.
 
 ### Playbook Execution
 
@@ -51,7 +51,7 @@ ansible-playbook almalinux_iso_repackage.yml
     original_iso_path: "/path/to/original/almalinux.iso"
     new_iso_path: "/path/to/new/almalinux.iso"
     ks_file_path: "/path/to/ks.cfg"
-    working_directory: "/tmp/isowork"
+    ks_working_directory: "/tmp/isowork"
 
   tasks:
     # ... (Playbook tasks here) ...
