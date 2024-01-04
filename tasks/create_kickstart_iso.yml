@@ -98,7 +98,7 @@
 - name: Save MD5 checksum to a file
   copy:
     content: "{{ md5_checksum }}"
-    dest: "md5_checksum_file.txt"
+    dest: "{{ ks_new_iso_path }}md5_checksum_file.txt"
     mode: '0644'
   when: md5_checksum is defined
 
