@@ -12,6 +12,7 @@ GitHub: [J-SirL](https://github.com/J-SirL/)
    - [Templates](#templates)
    - [Defaults](#defaults-mainyml)
    - [Meta](#meta-mainyml)
+4. [Default variables](#default-variables)
 5. [Usage](#usage)
 6. [Example Playbook](#example-playbook)
 7. [Requirements File](#requirements-file-requirementsyml)
@@ -80,6 +81,53 @@ This Ansible role, created by Johan Sörell, is designed for creating a Kickstar
 ```yaml
 {content of meta/main.yml}
 ```
+
+### Default Variables
+
+This section details the default variables defined in the `defaults/main.yml` file of the role, explaining their purpose and usage:
+
+- **`ks_pass`**
+  - **Value**: `$6$jpVj9WymVzsOZVBX$SIxH/SA/LaEtFacGtjwb72680RgYSuYznwv8Yu9zgQgJCpcw3BOu85JVIXwUBYDP/DErpnS3fwAb4QuuyV1ag1`
+  - **Description**: The encrypted password used in the Kickstart configuration.
+  - **Usage**: Utilized for setting up user accounts within the Kickstart files.
+  - You need to change the password to be able to use your system I have written a HowTo Guide if you do not know how to do that. [HowTo use encrypted password in kickstart](documentation/HowTo_use_encrypted_password_in_kickstart.md)
+
+- **`kickstart_type`**
+  - **Value**: `workstation` (valid options are `server` or `workstation`)
+  - **Description**: Specifies the type of installation.
+  - **Usage**: Determines which Kickstart configuration template is used for generating the ISO.
+
+- **`ks_new_iso_path`**
+  - **Value**: `"{{ playbook_dir }}/finished_iso/"`
+  - **Description**: The path where the newly created Kickstart ISO will be stored.
+  - **Usage**: Defines the output location for the generated ISO file.
+
+- **`ks_original_iso_dir`**
+  - **Value**: `"{{ playbook_dir }}/original_iso"`
+  - **Description**: Directory to store the original ISO file.
+  - **Usage**: Acts as a storage location for the original, unmodified ISO.
+
+- **`ks_original_iso_path`**
+  - **Value**: `"{{ ks_original_iso_dir }}/AlmaLinux-9.3-x86_64-dvd.iso"`
+  - **Description**: The path to the original AlmaLinux ISO file.
+  - **Usage**: Specifies the location of the ISO file to be used as the base for modifications.
+
+- **`ks_working_directory`**
+  - **Value**: `"/tmp/isowork"`
+  - **Description**: Temporary working directory used during ISO creation.
+  - **Usage**: Serves as a workspace for processing and generating the Kickstart ISO.
+
+- **`ks_iso_url`**
+  - **Value**: `"https://repo.almalinux.org/almalinux/9.3/isos/x86_64/AlmaLinux-9.3-x86_64-dvd.iso"`
+  - **Description**: URL to download the AlmaLinux ISO.
+  - **Usage**: Used for downloading the ISO file if it’s not already present in the specified directory.
+
+- **`ks_expected_sha256_checksum`**
+  - **Value**: `"a8c4ed4b79edd0977d7f88be7c07e12c4b748671a7786eb636c6700e58068d5"`
+  - **Description**: SHA256 checksum for the downloaded ISO for verification.
+  - **Usage**: Ensures the integrity and authenticity of the downloaded ISO file.
+
+These default variables provide current configuration options for the role, enabling customization and flexibility in how the Kickstart ISO is created and customized.
 
 ### Usage
 Include this role in your Ansible playbook to facilitate the creation of a Kickstart ISO. Customize the default variables and templates as needed to suit your specific requirements.
