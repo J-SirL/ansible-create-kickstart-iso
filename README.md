@@ -24,11 +24,31 @@ GitHub: [J-SirL](https://github.com/J-SirL/)
 This Ansible role, created by Johan Sörell, is designed for creating a Kickstart ISO, particularly for AlmaLinux 9. It automates the process of downloading an ISO, applying custom configurations, and generating a new ISO with Kickstart settings.
 
 ### Directory Structure
-- **tasks**: Contains the YAML files for tasks.
-- **templates**: Jinja2 templates for configuration files.
-- **defaults**: Default variables for the role.
-- **meta**: Metadata about the role.
-
+```bash
+ansible-create-kickstart-iso/
+├── defaults
+│   └── main.yml
+├── documentation
+│   ├── HowTo_use_encrypted_password_in_kickstart.md
+│   ├── server-ks.cfg.j2.md
+│   └── workstation-ks.cgf.j2.md
+├── LICENSE
+├── meta
+│   └── main.yml
+├── README.md
+├── site.yml
+├── tasks
+│   ├── check_iso_status.yml
+│   ├── create_kickstart_iso.yml
+│   ├── download-almalinux-9.yml
+│   └── main.yml
+└── templates
+    ├── config
+    │   ├── server-ks.cfg.j2
+    │   └── workstation-ks.cfg.j2
+    ├── grub.cfg.j2
+    └── isolinux.cfg.j2
+```
 ### Key Components
 
 #### Tasks
