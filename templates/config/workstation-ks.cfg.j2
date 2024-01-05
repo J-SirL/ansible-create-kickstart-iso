@@ -47,20 +47,29 @@ firstboot --enable
 ignoredisk --only-use=nvme0n1
 # Partition clearing information
 clearpart --none --initlabel
+
 # Disk partitioning information
 part /boot --fstype="xfs" --ondisk=nvme0n1 --size=1024
-part pv.1050 --fstype="lvmpv" --ondisk=nvme0n1 --size=975547
-part /boot/efi --fstype="efi" --noformat --onpart=nvme0n1p1 --fsoptions="umask=0077,shortname=winnt" --label=ESP
+
+# Modify the size of the physical volume to account for the new EFI partition size
+part pv.1050 --fstype="lvmpv" --ondisk=nvme0n1 --size=975047  # Reduced by 500MB
+
+# EFI partition
+part /boot/efi --fstype="efi" --ondisk=nvme0n1 --size=500 --fsoptions="umask=0077,shortname=winnt" --label=ESP
+
 volgroup almalinux_developer --pesize=4096 pv.1050
 logvol swap --fstype="swap" --size=7926 --name=swap --vgname=almalinux_developer
 logvol /home --fstype="xfs" --size=307200 --name=home --vgname=almalinux_developer
 logvol / --fstype="xfs" --grow --maxsize=71680 --size=1024 --name=root --vgname=almalinux_developer
-logvol /opt --fstype="xfs" --size=588734 --name=opt --vgname=almalinux_developer
+
+# Reduce the size of /opt by 500MB
+logvol /opt --fstype="xfs" --size=588234 --name=opt --vgname=almalinux_developer  # Reduced by 500MB
+
 
 # System timezone
 timezone Europe/Stockholm --utc
 
 #Root password
 rootpw --lock
-user --groups=wheel --name=jsorell --password={{ ks_pass }} --iscrypted --gecos="Johan Sörell"
+user --groups=wheel --name={{ ks_user }} --password={{ ks_pass }} --iscrypted --gecos="Johan Sörell"
 

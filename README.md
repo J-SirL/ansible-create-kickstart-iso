@@ -7,16 +7,11 @@ GitHub: [J-SirL](https://github.com/J-SirL/)
 ### Table of Contents
 1. [Overview](#overview)
 2. [Directory Structure](#directory-structure)
-3. [Key Components](#key-components)
-   - [Tasks](#tasks)
-   - [Templates](#templates)
-   - [Defaults](#defaults-mainyml)
-   - [Meta](#meta-mainyml)
-4. [Default variables](#default-variables)
-5. [Usage](#usage)
-6. [Example Playbook](#example-playbook)
-7. [Requirements File](#requirements-file-requirementsyml)
-8. [Kickstart Files](#kickstart-files)
+3. [Default variables](#default-variables)
+4. [Usage](#usage)
+5. [Example Playbook](#example-playbook)
+6. [Requirements File](#requirements-file-requirementsyml)
+7. [Kickstart Files](#kickstart-files)
    - [server-ks.cfg.j2](#server-kscfgj2)
    - [workstation-ks.cfg.j2](#workstation-kscfgj2)
 
@@ -49,26 +44,6 @@ ansible-create-kickstart-iso/
     ├── grub.cfg.j2
     └── isolinux.cfg.j2
 ```
-### Key Components
-
-#### Tasks
-1. **main.yml**
-   ```yaml
-   {content of tasks/main.yml}
-   ```
-2. **Other Task Files**
-   - `check_iso_status.yml`: 
-     ```yaml
-     {content of tasks/check_iso_status.yml}
-     ```
-   - `create_kickstart_iso.yml`: 
-     ```yaml
-     {content of tasks/create_kickstart_iso.yml}
-     ```
-   - `download-almalinux-9.yml`: 
-     ```yaml
-     {content of tasks/download-almalinux-9.yml}
-     ```
 
 #### Templates
 - **grub.cfg.j2**

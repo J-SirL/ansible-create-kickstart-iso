@@ -2,6 +2,7 @@
 ---
 
 # This is the variables for user and password
+ks_user: jsorell
 ks_pass: $6$jpVj9WymVzsOZVBX$SIxH/SA/LaEtFacGtjwb72680RgYSuYznwv8Yu9zgQgJCpcw3BOu85JVIXwUBYDP/DErpnS3fwAb4QuuyV1ag1
 
 # Select the type of OS you like to install a Server or Workstation

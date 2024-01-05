@@ -33,15 +33,37 @@ cdrom
 firstboot --enable
 
 # Generated using Blivet version 3.6.0
-ignoredisk --only-use=vda
-autopart
+ignoredisk --only-use=nvme0n1
 # Partition clearing information
 clearpart --none --initlabel
+
+# Disk partitioning information
+part /boot --fstype="xfs" --ondisk=nvme0n1 --size=1024
+
+# EFI partition with a fixed size of 512MB
+part /boot/efi --fstype="efi" --ondisk=nvme0n1 --size=512 --fsoptions="umask=0077,shortname=winnt" --label=ESP
+
+# Create a physical volume for LVM using the remaining space
+part pv.1050 --fstype="lvmpv" --ondisk=nvme0n1 --grow --size=1 --maxsize=100000
+
+volgroup almalinux_developer --pesize=4096 pv.1050
+
+# Assign a fixed size for swap
+logvol swap --fstype="swap" --size=16384 --name=swap --vgname=almalinux_developer  # 16GB Swap
+
+# Assign percentages of the remaining space to other logical volumes
+logvol /home --fstype="xfs" --percent=30 --name=home --vgname=almalinux_developer
+
+# Increase the percentage for the root partition by the percentage initially allocated to swap
+logvol / --fstype="xfs" --percent=29.9 --name=root --vgname=almalinux_developer  # Adjusted for swap change
+
+logvol /opt --fstype="xfs" --percent=40 --name=opt --vgname=almalinux_developer
+
 
 # System timezone
 timezone Europe/Stockholm --utc
 
 #Root password
 rootpw --lock
-user --groups=wheel --name=jsorell --password={{ ks_pass }} --iscrypted --gecos="Johan Sörell"
+user --groups=wheel --name={{ ks_user }} --password={{ ks_pass }} --iscrypted --gecos="Johan Sörell"
 
