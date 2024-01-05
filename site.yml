@@ -1,0 +1,9 @@
+# code: language=ansible
+---
+- name: Install role JsirL common
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - role: JsirL.create_kickstart_iso
+
