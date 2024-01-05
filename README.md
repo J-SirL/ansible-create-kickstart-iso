@@ -163,4 +163,4 @@ Documentation is of server-ks-cfg is located under documentation/server-ks.cfg.j
 #### workstation-ks.cfg.j2
 
 Documentation is of server-ks-cfg is located under documentation/server-ks.cfg.j2.md
-[workstation-ks.cfg.j2](documentation/workstation-ks.cfg.j2.md)
+[workstation-ks.cfg.j2](documentation/workstation-ks.cgf.j2.md)
