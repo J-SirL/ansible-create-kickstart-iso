@@ -45,7 +45,7 @@
 
 - name: Determine the correct Kickstart file path
   set_fact:
-    ks_kickstart_file_path: "{{ 'templates/config/server-ks.cfg.j2' if kickstart_type == 'server' else 'templates/config/workstation-ks.cfg.j2' }}"
+    ks_kickstart_file_path: "{{ 'templates/config/server-dynamic-kickstart.j2' if kickstart_type == 'server' else 'templates/config/workstation-ks.cfg.j2' }}"
 
 - name: Set the correct iso file name
   set_fact:
