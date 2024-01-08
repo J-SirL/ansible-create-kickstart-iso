@@ -13,7 +13,7 @@
 
 - name: Extract SHA256 checksum for ISO
   ansible.builtin.shell:
-    cmd: "grep 'AlmaLinux-9.3-x86_64-dvd.iso' /tmp/CHECKSUM | awk -F'= ' '{print $2}'"
+    cmd: "grep 'AlmaLinux-9.3-x86_64-dvd.iso' /tmp/CHECKSUM | awk -F'= ' '{print $2}' | tr -d '[:space:]'"
   register: extracted_checksum
   when: downloaded_checksum is succeeded
 
