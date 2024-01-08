@@ -4,23 +4,55 @@
   ansible.builtin.stat:
     path: "{{ ks_original_iso_path }}"
   register: ks_iso_file_stat
+  ignore_errors: true
+
+- name: Download CHECKSUM file
+  ansible.builtin.get_url:
+    url: "{{ ks_original_iso_path_checksum }}"
+    dest: "/tmp/CHECKSUM"
+  register: downloaded_checksum
+  when: ks_iso_file_stat.stat.exists
+  ignore_errors: true
+
+- name: Extract SHA256 checksum for ISO
+  ansible.builtin.shell:
+    cmd: "grep 'AlmaLinux-9.3-x86_64-dvd.iso' /tmp/CHECKSUM | awk -F'= ' '{print $2}' | tr -d '[:space:]'"
+  register: extracted_checksum
+  changed_when: false
+  when:
+    - ks_iso_file_stat.stat.exists
+    - downloaded_checksum is succeeded
+
+- name: Debug - Print downloaded checksum
+  ansible.builtin.debug:
+    var: downloaded_checksum.stdout_lines
+    verbosity: 3
+  when: downloaded_checksum is defined
+
+- name: Debug - Print extracted checksum
+  ansible.builtin.debug:
+    var: extracted_checksum.stdout_lines
+    verbosity: 3
+  when: extracted_checksum is defined
 
 - name: Calculate the SHA256 checksum of the original iso
   ansible.builtin.shell:
     cmd: "sha256sum {{ ks_original_iso_path }} | awk '{ print $1 }'"
-  register: sha256sum
+  register: calculated_checksum
+  changed_when: false
   when: ks_iso_file_stat.stat.exists
 
 - name: Assert that the checksum matches
   ansible.builtin.assert:
     that:
-      - sha256sum.stdout == ks_expected_sha256_checksum
+      - calculated_checksum.stdout == extracted_checksum.stdout
     fail_msg: "Checksum does not match"
     success_msg: "Checksum matches"
-  when: ks_iso_file_stat.stat.exists
-  ignore_errors: yes
+  when: 
+    - ks_iso_file_stat.stat.exists
+    - extracted_checksum is defined
+  ignore_errors: true
   register: checksum_assertion
-
 
 - name: Include tasks to handle file download/replacement
   include_tasks: download-almalinux-9.yml
