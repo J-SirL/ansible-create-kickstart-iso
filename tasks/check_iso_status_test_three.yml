@@ -17,6 +17,12 @@
   register: extracted_checksum
   when: downloaded_checksum is succeeded
 
+- name: Debug - Print extracted checksum
+  ansible.builtin.debug:
+    var: extracted_checksum.stdout
+  when: extracted_checksum is defined
+
+
 
 - name: Calculate the SHA256 checksum of the original iso
   ansible.builtin.shell:
