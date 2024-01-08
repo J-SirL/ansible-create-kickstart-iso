@@ -13,6 +13,7 @@ ks_new_iso_path: "{{ playbook_dir }}/finished_iso/"
 ks_original_iso_dir: "{{ playbook_dir }}/original_iso/"
 
 ks_original_iso_path: "{{ ks_original_iso_dir }}AlmaLinux-9.3-x86_64-dvd.iso"
+ks_original_iso_path_checksum: "https://repo.almalinux.org/almalinux/9.3/isos/x86_64/CHECKSUM"
 
 
 #ks_file_path: "./config/ks.cfg" now it's set in the file 

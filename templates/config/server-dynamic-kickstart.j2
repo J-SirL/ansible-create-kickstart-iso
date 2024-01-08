@@ -61,18 +61,18 @@ EOF
 else
     # SATA disk detected
     cat > /tmp/partition_layout << EOF
-ignoredisk --only-use=sda
+ignoredisk --only-use=vda
 clearpart --none --initlabel
 # Define your SATA disk partitioning scheme here
 # For example:
-part /boot --fstype="xfs" --ondisk=sda --size=1024
-part /boot/efi --fstype="efi" --ondisk=sda --size=512
-part pv.sata --fstype="lvmpv" --ondisk=sda --grow --size=1 --maxsize=100000
-volgroup vg_sata --pesize=4096 pv.sata
-logvol swap --fstype="swap" --size=16384 --name=swap --vgname=vg_sata
-logvol /home --fstype="xfs" --percent=30 --name=home --vgname=vg_sata
-logvol / --fstype="xfs" --percent=29.9 --name=root --vgname=vg_sata
-logvol /opt --fstype="xfs" --percent=40 --name=opt --vgname=vg_sata
+part /boot --fstype="xfs" --ondisk=vda --size=1024
+part /boot/efi --fstype="efi" --ondisk=vda --size=512
+part pv.sata --fstype="lvmpv" --ondisk=vda --grow --size=1 --maxsize=100000
+volgroup almalinux_developer --pesize=4096 pv.sata
+logvol swap --fstype="swap" --size=16384 --name=swap --vgname=almalinux_developer
+logvol /home --fstype="xfs" --percent=30 --name=home --vgname=almalinux_developer
+logvol / --fstype="xfs" --percent=29.9 --name=root --vgname=almalinux_developer
+logvol /opt --fstype="xfs" --percent=40 --name=opt --vgname=almalinux_developer
 EOF
 fi
 %end
