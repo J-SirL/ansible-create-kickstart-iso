@@ -12,6 +12,11 @@
   register: extracted_checksum
   when: downloaded_checksum is succeeded
 
+- name: Check if the original iso exists
+  ansible.builtin.stat:
+    path: "{{ ks_original_iso_path }}"
+  register: ks_iso_file_stat
+
 - name: Calculate the SHA256 checksum of the original iso
   ansible.builtin.shell:
     cmd: "sha256sum {{ ks_original_iso_path }} | awk '{ print $1 }'"
