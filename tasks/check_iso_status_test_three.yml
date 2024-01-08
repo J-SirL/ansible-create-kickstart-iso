@@ -17,9 +17,14 @@
   register: extracted_checksum
   when: downloaded_checksum is succeeded
 
+- name: Debug - Print downloaded checksum
+  ansible.builtin.debug:
+    var: downloaded_checksum.stdout_lines
+  when: downloaded_checksum is defined
+
 - name: Debug - Print extracted checksum
   ansible.builtin.debug:
-    var: extracted_checksum.stdout
+    var: extracted_checksum.stdout_lines
   when: extracted_checksum is defined
 
 
