@@ -14,12 +14,13 @@
 - name: Assert that the checksum matches
   ansible.builtin.assert:
     that:
-      - "'sha256:' + sha256sum.stdout == ks_expected_sha256_checksum"
+      - sha256sum.stdout == ks_expected_sha256_checksum
     fail_msg: "Checksum does not match"
     success_msg: "Checksum matches"
   when: ks_iso_file_stat.stat.exists
   ignore_errors: yes
   register: checksum_assertion
+
 
 - name: Include tasks to handle file download/replacement
   include_tasks: download-almalinux-9.yml
