@@ -1,0 +1,36 @@
+---
+- name: Check if the original iso exists
+  ansible.builtin.stat:
+    path: "{{ ks_original_iso_path }}"
+  register: ks_iso_file_stat
+  
+- name: Download CHECKSUM file
+  ansible.builtin.get_url:
+    url: "{{ ks_original_iso_path_checksum }}"
+    dest: "/tmp/CHECKSUM"
+  register: downloaded_checksum
+  ignore_errors: true
+
+- name: Extract SHA256 checksum for ISO
+  ansible.builtin.shell:
+    cmd: "grep -oP '(?<=SHA256 \\()(.*)(?=\\)  {{ ks_original_iso_path | basename }})' /tmp/CHECKSUM"
+  register: extracted_checksum
+  when: downloaded_checksum is succeeded
+
+- name: Calculate the SHA256 checksum of the original iso
+  ansible.builtin.shell:
+    cmd: "sha256sum {{ ks_original_iso_path }} | awk '{ print $1 }'"
+  register: calculated_checksum
+  when: ks_iso_file_stat.stat.exists
+
+- name: Assert that the checksum matches
+  ansible.builtin.assert:
+    that:
+      - calculated_checksum.stdout == extracted_checksum.stdout
+    fail_msg: "Checksum does not match"
+    success_msg: "Checksum matches"
+  when: 
+    - ks_iso_file_stat.stat.exists
+    - extracted_checksum is defined
+  ignore_errors: true
+  register: checksum_assertion
