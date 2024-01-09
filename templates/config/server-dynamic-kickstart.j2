@@ -14,9 +14,6 @@ keyboard --xlayouts='se'
 # System language
 lang en_GB.UTF-8
 
-# Network information
-network  --bootproto=dhcp --device=enp1s0 --ipv6=auto --activate --onboot=yes
-network  --hostname=virtualOne.sitedevelopments.lan
 
 # Use CDROM installation media
 cdrom
@@ -79,3 +76,25 @@ fi
 
 # Include the dynamic partition layout
 %include /tmp/partition_layout
+
+%post
+#!/bin/bash
+
+# Detect the primary network interface
+PRIMARY_IF=$(ip -br link | awk '$0 !~ "lo|vir|wl|^[^0-9]"{print $1;getline}')
+echo "Detected primary interface: $PRIMARY_IF"
+
+# Create a NetworkManager profile for the detected interface
+nmcli con add type ethernet con-name $PRIMARY_IF ifname $PRIMARY_IF
+
+# Configure the network interface to use DHCP and activate it
+nmcli con mod $PRIMARY_IF ipv4.method auto ipv6.method auto connection.autoconnect yes
+
+# Set the hostname
+hostnamectl set-hostname virtualOne.sitedevelopments.lan
+
+# Apply the network changes
+nmcli con up $PRIMARY_IF
+
+%end
+
