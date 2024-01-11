@@ -3,9 +3,10 @@
 - name: Ensure Valid kickstart Configuration Type
   ansible.builtin.assert:
     that:
-      - kickstart_type in ['server', 'workstation', 'laptopone']
-    fail_msg: "'kickstart_type' must be set to server, workstation, or laptopone but is currently set to {{ kickstart_type }}"
-    success_msg: "'kickstart_type' is set to {{ kickstart_type }}"
+      - kickstart_type|int > 0
+      - kickstart_type|int <= kickstart_choices | length
+    fail_msg: "'kickstart_type' must be a valid number corresponding to server, workstation, or laptopone but is currently set to {{ kickstart_type }}"
+    success_msg: "'kickstart_type' corresponds to the choice {{ kickstart_choices[kickstart_type|int - 1] }}"
 
 - name: Install required packages
   yum:
