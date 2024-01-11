@@ -9,7 +9,7 @@
     success_msg: "'kickstart_type' corresponds to the choice {{ kickstart_choices[kickstart_type|int - 1] }}"
 
 - name: Install required packages
-  yum:
+  ansible.builtin.dnf:
     name:
       - genisoimage
       - isomd5sum
@@ -17,7 +17,7 @@
     state: present
 
 - name: Create working directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0755
@@ -45,7 +45,7 @@
     state: unmounted
 
 - name: Determine the correct Kickstart file path and ISO file name
-  set_fact:
+  ansible.builtin.set_fact:
     ks_kickstart_file_path: "{{ kickstart_configurations[kickstart_choices[kickstart_type|int - 1]].file_path }}"
     ks_iso_file: "{{ kickstart_configurations[kickstart_choices[kickstart_type|int - 1]].iso_file }}"
 
@@ -68,7 +68,7 @@
     mode: '0644'
 
 - name: Recreate the ISO
-  command: >
+  ansible.builtin.command: >
     genisoimage -r -v -T -J -joliet-long -V "AlmaLinux-9-Modified"
     -volset "AlmaLinux-9-Modified" -A "AlmaLinux-9-Modified"
     -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot
@@ -79,28 +79,28 @@
   changed_when: "'extents written' in genisoimage_output.stderr"
 
 - name: Add MD5 checksum to the new ISO
-  command: implantisomd5 "{{ ks_new_iso_path }}{{ ks_iso_file }}"
+  ansible.builtin.command: implantisomd5 "{{ ks_new_iso_path }}{{ ks_iso_file }}"
   when: genisoimage_output is changed
   register: md5_output # noqa: no-handler
 
 - name: Extract MD5 checksum
-  set_fact:
+  ansible.builtin.set_fact:
     md5_checksum: "{{ md5_output.stdout | regex_search('md5 = (\\b[a-fA-F0-9]{32}\\b)', '\\1') | first }}"
   when: md5_output.stdout is defined and md5_output.stdout|length > 0
 
 - name: Debug  MD5 checksum
-  debug:
+  ansible.builtin.debug:
     var: md5_checksum
 
 - name: Save MD5 checksum to a file
-  copy:
+  ansible.builtin.copy:
     content: "{{ md5_checksum }}"
     dest: "{{ ks_new_iso_path }}md5_checksum_file.txt"
     mode: '0644'
   when: md5_checksum is defined
 
 - name: Cleanup working directory
-  file:
+  ansible.builtin.file:
     path: "{{ ks_working_directory }}"
     state: absent
   no_log: true
