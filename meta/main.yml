@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  role_name: create_kickstart_iso
+  namespace: jsirl
   author: Johan Sörell
   description: Ansible role for creating a Kickstart ISO, primarily for AlmaLinux 9.
   license: GPL-3.0
