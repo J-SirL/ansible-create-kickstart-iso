@@ -1,7 +1,7 @@
 ---
 - name: Set ks_kickstart_file_path based on kickstart_type
   set_fact:
-    ks_kickstart_file_path: "{{ kickstart_file_paths[kickstart_type] }}"
+    ks_kickstart_file_path: "{{ kickstart_file_paths[kickstart_choices[kickstart_type|int - 1]] }}"
 
 - name: Display ks_kickstart_file_path
   debug:
