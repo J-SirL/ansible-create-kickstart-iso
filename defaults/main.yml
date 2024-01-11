@@ -7,6 +7,12 @@ ks_pass: $6$jpVj9WymVzsOZVBX$SIxH/SA/LaEtFacGtjwb72680RgYSuYznwv8Yu9zgQgJCpcw3BO
 
 # Select the type of OS you like to install a Server or Workstation
 kickstart_type: workstation # valid types server|workstation
+
+# This selection can be modified by adding more choises 
+kickstart_choices:
+  - server
+  - workstation
+  - laptopone
 kickstart_file_paths:
   server: "templates/config/server-dynamic-kickstart.j2"
   workstation: "templates/config/workstation-dynamic.ks.cfg.j2"
