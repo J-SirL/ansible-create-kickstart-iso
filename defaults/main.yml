@@ -6,7 +6,7 @@ ks_user: jsorell
 ks_pass: $6$jpVj9WymVzsOZVBX$SIxH/SA/LaEtFacGtjwb72680RgYSuYznwv8Yu9zgQgJCpcw3BOu85JVIXwUBYDP/DErpnS3fwAb4QuuyV1ag1
 
 # Select the type of OS you like to install a Server or Workstation
-kickstart_type: workstation # valid types server|workstation
+#kickstart_type: workstation # valid types server|workstation
 
 # This selection can be modified by adding more choises 
 kickstart_choices:
