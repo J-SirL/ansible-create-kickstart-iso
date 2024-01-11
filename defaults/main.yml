@@ -21,8 +21,8 @@ kickstart_configurations:
     file_path: "templates/config/workstation-dynamic.ks.cfg.j2"
     iso_file: "almalinux9-3-GUI-kickstart.iso"
   laptopone:
-    file_path: "templates/config/laptopone-dynamic.ks.cfg.j2"
-    iso_file: "almalinux9-3-laptopone-kickstart.iso"  # Add the appropriate ISO file name for laptopone
+    file_path: "templates/config/laptopone-static.ks.cfg.j2"
+    iso_file: "almalinux9-3-laptopone-kickstart.iso" 
 
 ks_new_iso_path: "{{ playbook_dir }}/finished_iso/"
 
