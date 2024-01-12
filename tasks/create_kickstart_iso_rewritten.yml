@@ -69,7 +69,7 @@
 
 - name: Recreate the ISO
   ansible.builtin.command: >
-    genisoimage -r -v -T -J -joliet-long -V "AlmaLinux-9-Modified"
+    genisoimage -U -r -v -T -J -joliet-long -V "AlmaLinux-9-Modified"
     -volset "AlmaLinux-9-Modified" -A "AlmaLinux-9-Modified"
     -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot
     -boot-load-size 4 -boot-info-table -x "lost+found"
