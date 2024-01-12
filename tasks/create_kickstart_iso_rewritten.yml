@@ -8,6 +8,12 @@
     fail_msg: "'kickstart_type' must be a valid number corresponding to server, workstation, or laptopone but is currently set to {{ kickstart_type }}"
     success_msg: "'kickstart_type' corresponds to the choice {{ kickstart_choices[kickstart_type|int - 1] }}"
 
+- name: Unmount the ISO
+  ansible.posix.mount:
+    path: /mnt/iso
+    state: unmounted
+  ignore_errors: true
+
 - name: Install required packages
   ansible.builtin.dnf:
     name:
