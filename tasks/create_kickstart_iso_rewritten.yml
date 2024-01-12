@@ -12,7 +12,6 @@
   ansible.posix.mount:
     path: /mnt/iso
     state: unmounted
-  ignore_errors: true
 
 - name: Install required packages
   ansible.builtin.dnf:
