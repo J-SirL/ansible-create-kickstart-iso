@@ -13,7 +13,7 @@ kickstart_choices:
   - server
   - workstation
   - laptopone
-  - tycotech
+  - thycotech
 kickstart_configurations:
   server:
     file_path: "templates/config/server-dynamic-kickstart.j2"
