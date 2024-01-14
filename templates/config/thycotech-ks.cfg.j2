@@ -3,11 +3,10 @@
 # Use text mode install
 text
 
-# Keyboard layout
-keyboard --xlayouts='us'
-
-# Language
-lang en_US.UTF-8
+# Keyboard layouts
+keyboard --xlayouts='se'
+# System language
+lang en_GB.UTF-8
 
 # Network configuration with DHCP
 network --bootproto=dhcp --device=eth0 --onboot=on --activate
@@ -48,8 +47,7 @@ vim
 %end
 
 # User creation with hashed password
-user --name=tychotechdev --password=<encrypted_password> --gecos="TychoTech Developer" --home=/home/tychotechdev --create-home --groups=wheel
-
+user --groups=wheel --name=thytechcodev --password={{ ks_pass }} --iscrypted --gecos="Johan Sörell Head Developer"
 # Root password (locked initially)
 rootpw --lock
 
@@ -92,5 +90,5 @@ EOT
 systemctl enable disable-autologin.service
 
 # Force password change on first login for tychotechdev
-chage -d 0 tychotechdev
+chage -d 0 thychotechdev
 %end
