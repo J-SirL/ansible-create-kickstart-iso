@@ -38,8 +38,10 @@ skipx
 %packages
 @core
 @base
-@^development
+@development
 python3
+python3-pip
+podman
 git
 wget
 vim
@@ -50,6 +52,7 @@ vim
 user --groups=wheel --name=thytechcodev --password={{ ks_pass }} --iscrypted --gecos="Johan Sörell Head Developer"
 # Root password (locked initially)
 rootpw --lock
+
 
 # Post-installation script
 %post --log=/root/post_install.log
@@ -62,7 +65,15 @@ echo "AutomaticLoginEnable=True" >> /etc/gdm/custom.conf
 mkdir /opt/tychotech_dev
 chown tychotechdev:tychotechdev /opt/tychotech_dev
 
-# Script to disable auto-login after first boot
+# Additional development environment setup (e.g., clone git repositories, setup Python virtual environment)
+# Example: Setting up a Python virtual environment
+sudo -u tychotechdev python3 -m venv /opt/tychotech_dev/venv
+# Activate the virtual environment in future logins
+echo 'source /opt/tychotech_dev/venv/bin/activate' >> /home/tychotechdev/.bashrc
+
+# Script
+
+to disable auto-login after first boot
 cat <<EOT > /root/disable_autologin.sh
 #!/bin/bash
 sed -i '/AutomaticLogin/d' /etc/gdm/custom.conf
@@ -90,5 +101,5 @@ EOT
 systemctl enable disable-autologin.service
 
 # Force password change on first login for tychotechdev
-chage -d 0 thychotechdev
+chage -d 0 tychotechdev
 %end
