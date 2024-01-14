@@ -13,6 +13,7 @@ kickstart_choices:
   - server
   - workstation
   - laptopone
+  - tycotech
 kickstart_configurations:
   server:
     file_path: "templates/config/server-dynamic-kickstart.j2"
@@ -22,7 +23,10 @@ kickstart_configurations:
     iso_file: "almalinux9-3-GUI-kickstart.iso"
   laptopone:
     file_path: "templates/config/laptopone-static.ks.cfg.j2"
-    iso_file: "almalinux9-3-laptopone-kickstart.iso" 
+    iso_file: "almalinux9-3-laptopone-kickstart.iso"
+  thycotech:
+    file_path: "templates/config/thycotech-ks.cfg.j2"
+    iso_file: "almalinux9-3-thycotech-kickstart.iso" 
 
 ks_new_iso_path: "{{ playbook_dir }}/finished_iso/"
 
