@@ -1,0 +1,96 @@
+#version=RHEL9
+
+# Use text mode install
+text
+
+# Keyboard layout
+keyboard --xlayouts='us'
+
+# Language
+lang en_US.UTF-8
+
+# Network configuration with DHCP
+network --bootproto=dhcp --device=eth0 --onboot=on --activate
+
+# System authorization information
+auth --useshadow --passalgo=sha512
+
+# Timezone
+timezone UTC --isUtc
+
+# Enable services
+services --enabled="chronyd,sshd"
+
+# System bootloader configuration
+bootloader --location=mbr --timeout=5
+
+# Disk partitioning
+clearpart --all --initlabel
+autopart --type=lvm
+
+# Disable firewall and SELinux for simplicity (adjust as needed)
+firewall --disabled
+selinux --disabled
+
+# Do not configure the X Window System
+skipx
+
+# Package installation
+%packages
+@core
+@base
+@^development
+python3
+git
+wget
+vim
+# Additional packages as needed
+%end
+
+# User creation with hashed password
+user --name=tychotechdev --password=<encrypted_password> --gecos="TychoTech Developer" --home=/home/tychotechdev --create-home --groups=wheel
+
+# Root password (locked initially)
+rootpw --lock
+
+# Post-installation script
+%post --log=/root/post_install.log
+# Enable auto-login for the first boot
+echo "[daemon]" >> /etc/gdm/custom.conf
+echo "AutomaticLogin=tychotechdev" >> /etc/gdm/custom.conf
+echo "AutomaticLoginEnable=True" >> /etc/gdm/custom.conf
+
+# Create the /opt/tychotech_dev directory for project files
+mkdir /opt/tychotech_dev
+chown tychotechdev:tychotechdev /opt/tychotech_dev
+
+# Script to disable auto-login after first boot
+cat <<EOT > /root/disable_autologin.sh
+#!/bin/bash
+sed -i '/AutomaticLogin/d' /etc/gdm/custom.conf
+sed -i '/AutomaticLoginEnable/d' /etc/gdm/custom.conf
+rm -f /etc/systemd/system/disable-autologin.service
+rm -f /root/disable_autologin.sh
+EOT
+
+chmod +x /root/disable_autologin.sh
+
+# Systemd service to run the script on next boot
+cat <<EOT > /etc/systemd/system/disable-autologin.service
+[Unit]
+Description=Disable auto-login
+
+[Service]
+Type=oneshot
+ExecStart=/root/disable_autologin.sh
+
+[Install]
+WantedBy=multi-user.target
+EOT
+
+# Enable the systemd service
+systemctl enable disable-autologin.service
+
+# Force password change on first login for tychotechdev
+chage -d 0 tychotechdev
+%end
